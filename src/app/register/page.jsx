@@ -2,10 +2,10 @@
 
 import RegisterCard from '../components/RegisterCard'
 
-const page = () => {
+const RegisterPage = () => {
   return (
     <RegisterCard />
   )
 }
 
-export default page
+export default RegisterPage

@@ -2,10 +2,10 @@
 
 import LoginCard from '../components/LoginCard';
 
-const page = () => {
+const LoginPage = () => {
   return (
     <LoginCard />
   )
 }
 
-export default page
+export default LoginPage
