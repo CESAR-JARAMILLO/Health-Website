@@ -1,6 +1,6 @@
 'use client'
 
-import LoginCard from '../../components/LoginCard';
+import LoginCard from '../components/LoginCard';
 
 const page = () => {
   return (

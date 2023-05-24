@@ -1,6 +1,6 @@
 'use client'
 
-import RegisterCard from '../../components/RegisterCard'
+import RegisterCard from '../components/RegisterCard'
 
 const page = () => {
   return (
