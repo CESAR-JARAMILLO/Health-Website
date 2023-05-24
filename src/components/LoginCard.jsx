@@ -1,4 +1,5 @@
-import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Flex } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Flex, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 function LoginCard() {
   return (
@@ -16,6 +17,11 @@ function LoginCard() {
           </FormControl>
           <Button colorScheme="blue">Login</Button>
         </Stack>
+        <Box mt={4}>
+          <NextLink href="/register" passHref>
+            <Link color="blue.500">Not registered? Register</Link>
+          </NextLink>
+        </Box>
       </Box>
     </Flex>
   );
