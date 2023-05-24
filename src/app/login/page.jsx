@@ -1,8 +1,10 @@
-import React from 'react'
+'use client'
+
+import LoginCard from '../../components/LoginCard';
 
 const page = () => {
   return (
-    <div>login</div>
+    <LoginCard />
   )
 }
 
