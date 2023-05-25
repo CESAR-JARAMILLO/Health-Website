@@ -1,8 +1,18 @@
-import React from 'react'
+import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { headers, cookies } from 'next/headers'
 
-const PostsPage = () => {
+async function PostsPage() {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies
+  })
+
+  const {data: posts} = await supabase.from('posts').select()
+
   return (
-    <div>PostsPage</div>
+    <div>
+      {JSON.stringify(posts)}
+    </div>
   )
 }
 
