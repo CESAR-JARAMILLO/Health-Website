@@ -22,17 +22,12 @@ export default function RootLayout({ children }) {
     }
   }, [router, supabase])
 
-  const signOut = () => {
-    supabase.auth.signOut()
-  }
-
 
   return (
     <html lang="en">
       <body>
         <Providers>
           <Header />
-          <button onClick={signOut}>Sign Out</button>
           {children}
         </Providers>
       </body>
