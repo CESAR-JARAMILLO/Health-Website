@@ -19,6 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -38,8 +41,17 @@ const NavLink = ({ children }) => (
 );
 
 export default function Header() {
+  const [supabase] = useState(() => createBrowserSupabaseClient())
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  const router = useRouter()
+
+  const signOut = () => {
+    supabase.auth.signOut()
+
+    router.push('/login')
+  }
 
   return (
     <>
@@ -98,7 +110,7 @@ export default function Header() {
                   <MenuDivider />
                   <MenuItem>Your Servers</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={signOut}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
