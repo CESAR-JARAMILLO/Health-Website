@@ -23,13 +23,7 @@ import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-const Links = [
-  { name: 'Dashboard', href: '/' },
-  { name: 'Posts', href: '/posts' },
-  { name: 'Login', href: '/login' },
-];
-
-const NavLink = ({ name, href }) => (
+const NavLink = ({ name, href, onClick }) => (
   <Link
     px={2}
     py={1}
@@ -38,30 +32,45 @@ const NavLink = ({ name, href }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={href}
+    href={onClick ? undefined : href}
+    onClick={onClick}
   >
     {name}
   </Link>
 );
 
-export default function Header() {
-  const [supabase] = useState(() => createBrowserSupabaseClient())
+export default function Header( {user} ) {
+  const [supabase] = useState(() => createBrowserSupabaseClient());
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
-  const router = useRouter()
+  const router = useRouter();
 
-  const signOut = () => {
-    supabase.auth.signOut()
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out', error);
+    }
+  };
 
-    router.push('/login')
-  }
+  const Links = user
+    ? [
+        { name: 'Dashboard', href: '/' },
+        { name: 'Posts', href: '/posts' },
+        { name: 'Logout', href: '/login', onClick: signOut },
+      ]
+    : [
+        { name: 'Dashboard', href: '/' },
+        { name: 'Posts', href: '/posts' },
+        { name: 'Login', href: '/login' },
+      ];
 
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-        <IconButton
+          <IconButton
             size={'md'}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label={'Open Menu'}
@@ -70,10 +79,7 @@ export default function Header() {
           />
           <Box>Logo</Box>
 
-          <HStack
-            as={'nav'}
-            spacing={4}
-            display={{ base: 'none', md: 'flex' }}>
+          <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
               <NavLink key={link.name} name={link.name} href={link.href} />
             ))}
@@ -122,9 +128,9 @@ export default function Header() {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-            {Links.map((link) => (
-              <NavLink key={link.name} name={link.name} href={link.href} />
-            ))}
+              {Links.map((link) => (
+                <NavLink key={link.name} name={link.name} href={link.href} />
+              ))}
             </Stack>
           </Box>
         ) : null}
