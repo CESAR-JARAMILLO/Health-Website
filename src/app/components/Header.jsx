@@ -19,9 +19,10 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
+import { UserContext } from '../layout';
 
 const NavLink = ({ name, href, onClick }) => (
   <Link
@@ -39,11 +40,12 @@ const NavLink = ({ name, href, onClick }) => (
   </Link>
 );
 
-export default function Header( {user} ) {
+export default function Header() {
   const [supabase] = useState(() => createBrowserSupabaseClient());
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const user = useContext(UserContext);
 
   const signOut = async () => {
     try {

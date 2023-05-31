@@ -1,10 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useState, useEffect, createContext } from 'react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Providers } from "./providers";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import Header from './components/Header';
+
+// Create a context to hold the user state
+export const UserContext = createContext(null);
 
 export default function RootLayout({ children }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -39,8 +42,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Providers>
-          <Header user={user} />
-          {children}
+          {/* Provide the user state value to the children components */}
+          <UserContext.Provider value={user}>
+            <Header />
+            {children}
+          </UserContext.Provider>
         </Providers>
       </body>
     </html>
