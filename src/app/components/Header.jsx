@@ -23,9 +23,13 @@ import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const Links = [
+  { name: 'Dashboard', href: '/' },
+  { name: 'Posts', href: '/posts' },
+  { name: 'Login', href: '/login' },
+];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ name, href }) => (
   <Link
     px={2}
     py={1}
@@ -34,9 +38,9 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}
+    href={href}
   >
-    {children}
+    {name}
   </Link>
 );
 
@@ -67,14 +71,13 @@ export default function Header() {
           <Box>Logo</Box>
 
           <HStack
-              as={'nav'}
-              spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
-
+            as={'nav'}
+            spacing={4}
+            display={{ base: 'none', md: 'flex' }}>
+            {Links.map((link) => (
+              <NavLink key={link.name} name={link.name} href={link.href} />
+            ))}
+          </HStack>
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
               <Button onClick={toggleColorMode}>
@@ -119,9 +122,9 @@ export default function Header() {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
+            {Links.map((link) => (
+              <NavLink key={link.name} name={link.name} href={link.href} />
+            ))}
             </Stack>
           </Box>
         ) : null}
